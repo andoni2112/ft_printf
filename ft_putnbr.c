@@ -1,39 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_putnbr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: andpascu <andpascu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/03 19:11:29 by andpascu          #+#    #+#             */
-/*   Updated: 2026/07/03 20:38:06 by andpascu         ###   ########.fr       */
+/*   Created: 2026/07/06 16:15:39 by andpascu          #+#    #+#             */
+/*   Updated: 2026/07/06 16:15:54 by andpascu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_printf(const char *format, ...)
+static int	ft_putnbr_rec(long nb)
 {
-	int		i;
-	int		count;
-	va_list	args;
+	int	count;
 
-	i = 0;
 	count = 0;
-	va_start(args, format);
-	while (format[i] != '\0')
+	if (nb >= 10)
+		count += ft_putnbr_rec(nb / 10);
+	count += ft_putchar((nb % 10) + '0');
+	return (count);
+}
+
+int	ft_putnbr(int n)
+{
+	long	nb;
+	int		count;
+
+	nb = n;
+	count = 0;
+	if (nb < 0)
 	{
-		if (format[i] == '%' && format[i + 1] != '\0')
-		{
-			count += ft_format(format[i + 1], args);
-			i += 2;
-		}
-		else
-		{
-			count += ft_putchar(format[i]);
-			i++;
-		}
+		count += ft_putchar('-');
+		nb = -nb;
 	}
-	va_end(args);
+	count += ft_putnbr_rec(nb);
 	return (count);
 }

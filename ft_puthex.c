@@ -1,39 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_puthex.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: andpascu <andpascu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/03 19:11:29 by andpascu          #+#    #+#             */
-/*   Updated: 2026/07/03 20:38:06 by andpascu         ###   ########.fr       */
+/*   Created: 2026/07/06 16:20:00 by andpascu          #+#    #+#             */
+/*   Updated: 2026/07/06 16:20:15 by andpascu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_printf(const char *format, ...)
+int	ft_puthex(unsigned int n, char specifier)
 {
-	int		i;
 	int		count;
-	va_list	args;
+	char	*base;
 
-	i = 0;
 	count = 0;
-	va_start(args, format);
-	while (format[i] != '\0')
-	{
-		if (format[i] == '%' && format[i + 1] != '\0')
-		{
-			count += ft_format(format[i + 1], args);
-			i += 2;
-		}
-		else
-		{
-			count += ft_putchar(format[i]);
-			i++;
-		}
-	}
-	va_end(args);
+	if (specifier == 'x')
+		base = "0123456789abcdef";
+	else
+		base = "0123456789ABCDEF";
+	if (n >= 16)
+		count += ft_puthex(n / 16, specifier);
+	count += ft_putchar(base[n % 16]);
 	return (count);
 }

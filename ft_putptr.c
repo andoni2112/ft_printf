@@ -1,39 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_putptr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: andpascu <andpascu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/03 19:11:29 by andpascu          #+#    #+#             */
-/*   Updated: 2026/07/03 20:38:06 by andpascu         ###   ########.fr       */
+/*   Created: 2026/07/06 16:22:02 by andpascu          #+#    #+#             */
+/*   Updated: 2026/07/06 16:22:18 by andpascu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_printf(const char *format, ...)
+static int	ft_putptr_hex(unsigned long n)
 {
-	int		i;
 	int		count;
-	va_list	args;
+	char	*base;
 
-	i = 0;
 	count = 0;
-	va_start(args, format);
-	while (format[i] != '\0')
-	{
-		if (format[i] == '%' && format[i + 1] != '\0')
-		{
-			count += ft_format(format[i + 1], args);
-			i += 2;
-		}
-		else
-		{
-			count += ft_putchar(format[i]);
-			i++;
-		}
-	}
-	va_end(args);
+	base = "0123456789abcdef";
+	if (n >= 16)
+		count += ft_putptr_hex(n / 16);
+	count += ft_putchar(base[n % 16]);
+	return (count);
+}
+
+int	ft_putptr(void *ptr)
+{
+	int				count;
+	unsigned long	address;
+
+	if (ptr == NULL)
+		return (ft_putstr("(nil)"));
+	address = (unsigned long)ptr;
+	count = 0;
+	count += ft_putstr("0x");
+	count += ft_putptr_hex(address);
 	return (count);
 }

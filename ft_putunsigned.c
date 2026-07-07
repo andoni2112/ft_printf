@@ -1,39 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_putunsigned.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: andpascu <andpascu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/03 19:11:29 by andpascu          #+#    #+#             */
-/*   Updated: 2026/07/03 20:38:06 by andpascu         ###   ########.fr       */
+/*   Created: 2026/07/06 16:17:48 by andpascu          #+#    #+#             */
+/*   Updated: 2026/07/06 16:17:59 by andpascu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_printf(const char *format, ...)
+int	ft_putunsigned(unsigned int n)
 {
-	int		i;
-	int		count;
-	va_list	args;
+	int	count;
 
-	i = 0;
 	count = 0;
-	va_start(args, format);
-	while (format[i] != '\0')
-	{
-		if (format[i] == '%' && format[i + 1] != '\0')
-		{
-			count += ft_format(format[i + 1], args);
-			i += 2;
-		}
-		else
-		{
-			count += ft_putchar(format[i]);
-			i++;
-		}
-	}
-	va_end(args);
+	if (n >= 10)
+		count += ft_putunsigned(n / 10);
+	count += ft_putchar((n % 10) + '0');
 	return (count);
 }
